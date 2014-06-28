@@ -428,7 +428,7 @@ function spawnTowers() {
 }
 
 function addScore(_, inv) {
-    invs.remove(inv);
+    //invs.remove(inv);
     score += 1;
     scoreText.setText(score);
     scoreSnd.play();
