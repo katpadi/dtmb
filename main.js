@@ -437,7 +437,7 @@ function addScore(_, inv) {
 function setGameOver() {
     gameOver = true;
 
-    instText.setText("HIMAS BIRD\nTO TRY AGAIN");
+    instText.setText("TAP DRAGON\nTO TRY AGAIN");
     instText.renderable = true;
     var hiscore = window.localStorage.getItem('hiscore');
     hiscore = hiscore ? hiscore : score;
