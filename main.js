@@ -428,7 +428,7 @@ function spawnTowers() {
 }
 
 function addScore(_, inv) {
-    //invs.remove(inv);
+    invs.remove(inv); // This removes the pack after getting it
     score += 1;
     scoreText.setText(score);
     scoreSnd.play();
