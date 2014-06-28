@@ -412,7 +412,7 @@ function spawnTowers() {
      */
     var packY = Math.random() * game.height / 2;
     var inv = invs.create(
-        topTower.x + topTower.width, //ToDo: must not be totally IMPOSSIBLE to reach
+        topTower.x + topTower.width + Math.floor((Math.random() * 8) + 1), //ToDo: must not be totally IMPOSSIBLE to reach
         packY,
         'winpack',
         5
