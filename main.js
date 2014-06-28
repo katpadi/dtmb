@@ -24,11 +24,11 @@ Clay.ready = function( fn ) {
         wf.async = 'true';
         var s = document.getElementsByTagName('script')[0];
         s.parentNode.insertBefore(wf, s);
-    })(); 
+    })();
 };
 ( function() {
     var clay = document.createElement("script"); clay.async = true;
-    clay.src = "http://cdn.clay.io/api.js"; 
+    clay.src = "http://cdn.clay.io/api.js";
     var tag = document.getElementsByTagName("script")[0]; tag.parentNode.insertBefore(clay, tag);
 } )();
 
@@ -84,40 +84,42 @@ function postScore() {
         return;
     postScoreText.setText('...');
     postingScore = true;
-    
+
     var post = function() {
     	if(!leaderboard) return;
         leaderboard.post({ score: score }, function() {
             showScores();
-            postScoreText.setText('POST\nSCORE!');
+            postScoreText.setText('Choose The\nBetter Black!');
             postingScore = false;
         });
     }
-    
+
     if (Clay.Environment.platform == 'kik') {
 	    Clay.Kik.connect({}, function(response) {
 	        if (response.success) {
 	            Clay.Player.onUserReady( post );
 	        } else {
-	            postScoreText.setText('POST\nSCORE!');            
+	            postScoreText.setText('Choose The\nBetter Black!');
 	            postingScore = false;
 	        }
 	    });
     } else {
     	post();
     }
-    	
+
 }
 
 function preload() {
     var assets = {
         spritesheet: {
-            birdie: ['assets/birdie.png', 24, 24],
+            birdie: ['assets/dragon.png', 24, 20],
             clouds: ['assets/clouds.png', 128, 64]
         },
         image: {
-            tower: ['assets/tower.png'],
-            fence: ['assets/fence.png']
+            bigpack: ['assets/bigpack.jpg'],
+            winpack: ['assets/pack.jpg'],
+            tower:   ['assets/tower.png'],
+            fence:   ['assets/fence.png']
         },
         audio: {
             flap: ['assets/flap.wav'],
@@ -136,7 +138,7 @@ var gameStarted,
     gameOver,
     score,
     bg,
-    credits,
+    //credits,
     clouds,
     towers,
     invs,
@@ -144,6 +146,8 @@ var gameStarted,
     fence,
     scoreText,
     instText,
+    winpack,
+    bigpack,
     highScoreText,
     kikThisText,
     kikThisClickArea,
@@ -168,6 +172,8 @@ function create() {
     bg.drawRect(0, 0, game.world.width, game.world.height);
     bg.endFill();
     // Credits 'yo
+    // Wait lang steve!
+    /*
     credits = game.add.text(
         game.world.width / 2,
         10,
@@ -177,18 +183,21 @@ function create() {
             fill: '#fff',
             align: 'center'
         }
-    );
-    credits.anchor.x = 0.5;
+    ); */
+    //credits.anchor.x = 0.5;
     // Add clouds group
     clouds = game.add.group();
     // Add towers
     towers = game.add.group();
     // Add invisible thingies
     invs = game.add.group();
+    // Add a big pack here...
+    bigpack=game.add.sprite(150, 220, 'bigpack');
+
     // Add birdie
     birdie = game.add.sprite(0, 0, 'birdie');
     birdie.anchor.setTo(0.5, 0.5);
-    birdie.animations.add('fly', [0, 1, 2, 3], 10, true);
+    birdie.animations.add('fly', [0, 1], 10, true);
     birdie.inputEnabled = true;
     birdie.body.collideWorldBounds = true;
     birdie.body.gravity.y = GRAVITY;
@@ -197,14 +206,14 @@ function create() {
     fence.tileScale.setTo(2, 2);
     // Add score text
     scoreText = game.add.text(
-        game.world.width / 2,
+        game.world.width / 2, //test
         game.world.height / 5,
         "",
         {
-            font: '32px "Press Start 2P"',
-            fill: '#fff',
-            stroke: '#430',
-            strokeThickness: 8,
+            font: '20px "Press Start 2P"',
+            fill: '#000000',
+            stroke: '#2dcc70',
+            strokeThickness: 4,
             align: 'center'
         }
     );
@@ -237,26 +246,27 @@ function create() {
         }
     );
     highScoreText.anchor.setTo(0.5, 0.5);
-    
+
     // Add kik this text (hidden until game is over)
+    // ETO YUN!
     postScoreText = game.add.text(
         game.world.width / (Clay.Environment.platform == 'kik' ?  4 : 2),
         game.world.height / 2,
         "",
         {
-            font: '20px "Press Start 2P"',
-            fill: '#fff',
-            stroke: '#430',
-            strokeThickness: 8,
+            font: '23px "Press Start 2P"',
+            fill: '#000',
+            stroke: '#2dcc70',
+            strokeThickness: 4,
             align: 'center'
         }
     );
-    postScoreText.setText("POST\nSCORE!");
+    postScoreText.setText("Choose\nThe\nBetter Black");
     postScoreText.anchor.setTo(0.5, 0.5);
     postScoreText.renderable = false;
     // So we can have clickable text... we check if the mousedown/touch event is within this rectangle inside flap()
     postScoreClickArea = new Phaser.Rectangle(postScoreText.x - postScoreText.width / 2, postScoreText.y - postScoreText.height / 2, postScoreText.width, postScoreText.height);
-    
+
     // Add kik this text (hidden until game is over)
     kikThisText = game.add.text(
         3 * game.world.width / 4,
@@ -275,7 +285,7 @@ function create() {
     kikThisText.renderable = false;
     // So we can have clickable text... we check if the mousedown/touch event is within this rectangle inside flap()
     kikThisClickArea = new Phaser.Rectangle(kikThisText.x - kikThisText.width / 2, kikThisText.y - kikThisText.height / 2, kikThisText.width, kikThisText.height);
-    
+
     // Add sounds
     flapSnd = game.add.audio('flap');
     scoreSnd = game.add.audio('score');
@@ -295,8 +305,8 @@ function reset() {
     gameStarted = false;
     gameOver = false;
     score = 0;
-    credits.renderable = true;
-    scoreText.setText("HEAVY\nBIRD");
+    //credits.renderable = true;
+    scoreText.setText("\n\nWinston\nExtreme Mint\n\nChoose\nThe\nBetter Black");
     instText.setText("TOUCH TO\nFLAP WINGS");
     highScoreText.renderable = false;
     postScoreText.renderable = false;
@@ -311,7 +321,7 @@ function reset() {
 }
 
 function start() {
-    credits.renderable = false;
+    //credits.renderable = false;
     birdie.body.allowGravity = true;
     // SPAWN FINGERS!
     towersTimer = new Phaser.Timer(game);
@@ -321,6 +331,7 @@ function start() {
     // Show score
     scoreText.setText(score);
     instText.renderable = false;
+    bigpack.renderable = false;
     // START!
     gameStarted = true;
 }
@@ -396,10 +407,19 @@ function spawnTowers() {
     // Top tower (flipped)
     var topTower = spawnTower(towerY, true);
 
-    // Add invisible thingy
-    var inv = invs.create(topTower.x + topTower.width, 0);
-    inv.width = 2;
-    inv.height = game.world.height;
+    /*
+     *  This produces the random Winston packs. LOL
+     */
+    var packY = Math.random() * game.height / 2;
+    var inv = invs.create(
+        topTower.x + topTower.width, //ToDo: must not be totally IMPOSSIBLE to reach
+        packY,
+        'winpack',
+        5
+    );
+
+    //inv.width = 2;
+    //inv.height = game.world.height-5;
     inv.body.allowGravity = false;
     inv.body.velocity.x = -SPEED;
 
@@ -416,7 +436,8 @@ function addScore(_, inv) {
 
 function setGameOver() {
     gameOver = true;
-    instText.setText("TOUCH BIRD\nTO TRY AGAIN");
+
+    instText.setText("HIMAS BIRD\nTO TRY AGAIN");
     instText.renderable = true;
     var hiscore = window.localStorage.getItem('hiscore');
     hiscore = hiscore ? hiscore : score;
@@ -424,12 +445,12 @@ function setGameOver() {
     window.localStorage.setItem('hiscore', hiscore);
     highScoreText.setText("HIGHSCORE\n" + hiscore);
     highScoreText.renderable = true;
-    
+
     postScoreText.renderable = true;
     if (Clay.Environment.platform == 'kik') {
         kikThisText.renderable = true;
     }
-    
+
     // Stop all towers
     towers.forEachAlive(function(tower) {
         tower.body.velocity.x = 0;
