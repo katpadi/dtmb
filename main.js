@@ -126,6 +126,22 @@ function create() {
     // Add fence
     fence = game.add.tileSprite(0, game.world.height - 32, game.world.width, 32, 'fence');
     fence.tileScale.setTo(2, 2);
+
+    // Add game over text
+    highScoreText = game.add.text(
+        game.world.width / 2,
+        game.world.height / 3,
+        "",
+        {
+            font: '12px "Press Start 2P"',
+            fill: '#000000',
+            stroke: '#2dcc70',
+            strokeThickness: 4,
+            align: 'center'
+        }
+    );
+    highScoreText.anchor.setTo(0.5, 0.5);
+
     // Add score text
     scoreText = game.add.text(
         game.world.width / 2, //test
@@ -154,20 +170,6 @@ function create() {
         }
     );
     instText.anchor.setTo(0.5, 0.5);
-    // Add game over text
-    highScoreText = game.add.text(
-        game.world.width / 2,
-        game.world.height / 3,
-        "",
-        {
-            font: '24px "Press Start 2P"',
-            fill: '#000000',
-            stroke: '#2dcc70',
-            strokeThickness: 4,
-            align: 'center'
-        }
-    );
-    highScoreText.anchor.setTo(0.5, 0.5);
 
     // ETO YUN!
     gameOverText = game.add.text(
@@ -327,12 +329,16 @@ function setGameOver() {
 
     instText.setText("TAP DRAGON\nTO TRY AGAIN");
     instText.renderable = true;
+    /*
     var hiscore = window.localStorage.getItem('hiscore');
     hiscore = hiscore ? hiscore : score;
     hiscore = score > parseInt(hiscore, 10) ? score : hiscore;
     window.localStorage.setItem('hiscore', hiscore);
-    highScoreText.setText("HIGHSCORE\n" + hiscore);
-    highScoreText.renderable = true;
+    */
+    //highScoreText.setText("HIGHSCORE\n" + hiscore);
+    // Just your score for now
+    highScoreText.setText("YOUR SCORE\n ");
+    highScoreText.renderable = true; //dont show high score
 
     gameOverText.renderable = true;
 
