@@ -114,11 +114,11 @@ function create() {
     // Add invisible thingies
     invs = game.add.group();
     // Add a big pack here...
-    bigpack=game.add.sprite(150, 220, 'bigpack');
+    bigpack=game.add.sprite(150, 250, 'bigpack');
 
     // Add birdie
     birdie = game.add.sprite(0, 0, 'birdie');
-    birdie.anchor.setTo(0.5, 0.5);
+    birdie.anchor.setTo(0.5, 0);
     birdie.animations.add('fly', [0, 1], 10, true);
     birdie.inputEnabled = true;
     birdie.body.collideWorldBounds = true;
