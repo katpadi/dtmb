@@ -5,35 +5,20 @@ var FLAP = 420;
 var SPAWN_RATE = 1 / 1.2;
 var OPENING = 144;
 
-// Load in Clay.io API
-var Clay = Clay || {};
-Clay.gameKey = "dtmb";
-Clay.readyFunctions = [];
-Clay.ready = function( fn ) {
-    Clay.readyFunctions.push( fn );
-    // Load game
-    WebFontConfig = {
-        google: { families: [ 'Press+Start+2P::latin' ] },
-        active: main
-    };
-    (function() {
-        var wf = document.createElement('script');
-        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-        wf.type = 'text/javascript';
-        wf.async = 'true';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(wf, s);
-    })();
+// Load game
+WebFontConfig = {
+    google: { families: [ 'Press+Start+2P::latin' ] },
+    active: main
 };
-( function() {
-    var clay = document.createElement("script"); clay.async = true;
-    clay.src = "http://cdn.clay.io/api.js";
-    var tag = document.getElementsByTagName("script")[0]; tag.parentNode.insertBefore(clay, tag);
-} )();
-
-if(typeof cards !== 'undefined' && cards.kik)
-    window.location.href = 'card://flirtybird.clay.io';
+(function() {
+    var wf = document.createElement('script');
+    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+        '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+    wf.type = 'text/javascript';
+    wf.async = 'true';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(wf, s);
+})();
 
 function main() {
 
@@ -55,59 +40,6 @@ var game = new Phaser.Game(
     false,
     false
 );
-
-
-function clayLoaded() {
-    // Set up the menu items
-    var options = {
-        items: [
-            { title: 'View High Scores', handler: showScores }
-        ]
-    };
-    Clay.UI.Menu.init(options);
-    leaderboard = new Clay.Leaderboard({ id: 2797 });
-}
-Clay.ready(clayLoaded);
-
-function showScores() {
-    if (leaderboard) {
-        leaderboard.show({ best: true });
-    }
-}
-
-function kikThis() {
-    Clay.Kik.post( { message: 'I just scored ' + score + ' in Heavy Bird! Think you can beat my score?', title: 'Heavy Bird!' } );
-}
-
-function postScore() {
-    if( postingScore ) // skip if it's already trying to post the score...
-        return;
-    postScoreText.setText('...');
-    postingScore = true;
-
-    var post = function() {
-    	if(!leaderboard) return;
-        leaderboard.post({ score: score }, function() {
-            showScores();
-            postScoreText.setText('Choose The\nBetter Black!');
-            postingScore = false;
-        });
-    }
-
-    if (Clay.Environment.platform == 'kik') {
-	    Clay.Kik.connect({}, function(response) {
-	        if (response.success) {
-	            Clay.Player.onUserReady( post );
-	        } else {
-	            postScoreText.setText('Choose The\nBetter Black!');
-	            postingScore = false;
-	        }
-	    });
-    } else {
-    	post();
-    }
-
-}
 
 function preload() {
     var assets = {
@@ -149,8 +81,6 @@ var gameStarted,
     winpack,
     bigpack,
     highScoreText,
-    kikThisText,
-    kikThisClickArea,
     postScoreClickArea,
     postingScore,
     leaderboard,
@@ -247,10 +177,9 @@ function create() {
     );
     highScoreText.anchor.setTo(0.5, 0.5);
 
-    // Add kik this text (hidden until game is over)
     // ETO YUN!
     postScoreText = game.add.text(
-        game.world.width / (Clay.Environment.platform == 'kik' ?  4 : 2),
+        game.world.width / 2,
         game.world.height / 2,
         "",
         {
@@ -266,25 +195,6 @@ function create() {
     postScoreText.renderable = false;
     // So we can have clickable text... we check if the mousedown/touch event is within this rectangle inside flap()
     postScoreClickArea = new Phaser.Rectangle(postScoreText.x - postScoreText.width / 2, postScoreText.y - postScoreText.height / 2, postScoreText.width, postScoreText.height);
-
-    // Add kik this text (hidden until game is over)
-    kikThisText = game.add.text(
-        3 * game.world.width / 4,
-        game.world.height / 2,
-        "",
-        {
-            font: '20px "Press Start 2P"',
-            fill: '#000000',
-            stroke: '#2dcc70',
-            strokeThickness: 4,
-            align: 'center'
-        }
-    );
-    kikThisText.setText("KIK\nTHIS!");
-    kikThisText.anchor.setTo(0.5, 0.5);
-    kikThisText.renderable = false;
-    // So we can have clickable text... we check if the mousedown/touch event is within this rectangle inside flap()
-    kikThisClickArea = new Phaser.Rectangle(kikThisText.x - kikThisText.width / 2, kikThisText.y - kikThisText.height / 2, kikThisText.width, kikThisText.height);
 
     // Add sounds
     flapSnd = game.add.audio('flap');
@@ -310,7 +220,6 @@ function reset() {
     instText.setText("TOUCH TO\nFLAP WINGS");
     highScoreText.renderable = false;
     postScoreText.renderable = false;
-    kikThisText.renderable = false;
     birdie.body.allowGravity = false;
     birdie.angle = 0;
     birdie.reset(game.world.width / 4, game.world.height / 2);
@@ -343,15 +252,6 @@ function flap() {
     if (!gameOver) {
         birdie.body.velocity.y = -FLAP;
         flapSnd.play();
-    } else {
-        // Check if the touch event is within our text for posting a score
-        if (postScoreClickArea && Phaser.Rectangle.contains(postScoreClickArea, game.input.x, game.input.y)) {
-            postScore();
-        }
-        // Check if the touch event is within our text for sending a kik message
-        else if (Clay.Environment.platform == 'kik' && kikThisClickArea && Phaser.Rectangle.contains(kikThisClickArea, game.input.x, game.input.y)) {
-            kikThis();
-        }
     }
 }
 
@@ -445,9 +345,6 @@ function setGameOver() {
     highScoreText.renderable = true;
 
     postScoreText.renderable = true;
-    if (Clay.Environment.platform == 'kik') {
-        kikThisText.renderable = true;
-    }
 
     // Stop all towers
     towers.forEachAlive(function(tower) {
@@ -495,7 +392,6 @@ function update() {
                 1 + 0.1 * Math.cos(game.time.now / 100)
             );
             postScoreText.angle = Math.random() * 5 * Math.cos(game.time.now / 100);
-            kikThisText.angle = Math.random() * 5 * Math.sin(game.time.now / 100);
         } else {
             // Check game over
             game.physics.overlap(birdie, towers, setGameOver);
