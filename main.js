@@ -42,7 +42,7 @@ var game = new Phaser.Game(
 function preload() {
     var assets = {
         spritesheet: {
-            birdie: ['assets/babydragon.png', 52, 48],
+            birdie: ['assets/babydragon3.png', 52, 48],
             clouds: ['assets/clouds.png', 128, 64]
         },
         image: {
@@ -119,7 +119,7 @@ function create() {
     // Add birdie
     birdie = game.add.sprite(0, 0, 'birdie');
     birdie.anchor.setTo(0.5, 0);
-    birdie.animations.add('fly', [0, 1], 10, true);
+    birdie.animations.add('fly', [0, 1, 2], 10, true);
     birdie.inputEnabled = true;
     birdie.body.collideWorldBounds = true;
     birdie.body.gravity.y = GRAVITY;
