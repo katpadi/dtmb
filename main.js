@@ -357,6 +357,7 @@ function setGameOver() {
     */
     //highScoreText.setText("HIGHSCORE\n" + hiscore);
     // Just your score for now
+
     highScoreText.setText("FINAL SCORE\n ");
     highScoreText.renderable = true; //dont show high score
 
