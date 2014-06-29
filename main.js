@@ -133,7 +133,7 @@ function create() {
         game.world.height / 3,
         "",
         {
-            font: '12px "Press Start 2P"',
+            font: '16px "Press Start 2P"',
             fill: '#000000',
             stroke: '#2dcc70',
             strokeThickness: 4,
@@ -179,8 +179,8 @@ function create() {
         "",
         {
             font: '16px "Press Start 2P"',
-            fill: '#000000',
-            stroke: '#2dcc70',
+            fill: '#fff',
+            stroke: '#000',
             strokeThickness: 4,
             align: 'center'
         }
@@ -226,6 +226,8 @@ function reset() {
     //credits.renderable = true;
     titleText.setText("\n\nWinston\nExtreme Mint\n\nChoose\nThe\nBetter Black");
     instText.setText("TOUCH TO\nFLAP WINGS");
+    titleText.renderable = true;
+    bigpack.renderable = true;
     highScoreText.renderable = false;
     gameOverText.renderable = false;
     birdie.body.allowGravity = false;
@@ -355,7 +357,7 @@ function setGameOver() {
     */
     //highScoreText.setText("HIGHSCORE\n" + hiscore);
     // Just your score for now
-    highScoreText.setText("YOUR SCORE\n ");
+    highScoreText.setText("FINAL SCORE\n ");
     highScoreText.renderable = true; //dont show high score
 
     gameOverText.renderable = true;
