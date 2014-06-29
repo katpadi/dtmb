@@ -148,6 +148,21 @@ function create() {
         game.world.height / 5,
         "",
         {
+            font: '25px "Press Start 2P"',
+            fill: '#fff',
+            stroke: '#000',
+            strokeThickness: 4,
+            align: 'center'
+        }
+    );
+    scoreText.anchor.setTo(0.5, 0.5);
+
+    // Add score text
+    titleText = game.add.text(
+        game.world.width / 2, //test
+        game.world.height / 5,
+        "",
+        {
             font: '20px "Press Start 2P"',
             fill: '#000000',
             stroke: '#2dcc70',
@@ -155,7 +170,8 @@ function create() {
             align: 'center'
         }
     );
-    scoreText.anchor.setTo(0.5, 0.5);
+    titleText.anchor.setTo(0.5, 0.5);
+
     // Add instructions text
     instText = game.add.text(
         game.world.width / 2,
@@ -208,7 +224,7 @@ function reset() {
     gameOver = false;
     score = 0;
     //credits.renderable = true;
-    scoreText.setText("\n\nWinston\nExtreme Mint\n\nChoose\nThe\nBetter Black");
+    titleText.setText("\n\nWinston\nExtreme Mint\n\nChoose\nThe\nBetter Black");
     instText.setText("TOUCH TO\nFLAP WINGS");
     highScoreText.renderable = false;
     gameOverText.renderable = false;
@@ -232,6 +248,7 @@ function start() {
     // Show score
     scoreText.setText(score);
     instText.renderable = false;
+    titleText.renderable = false;
     bigpack.renderable = false;
     // START!
     gameStarted = true;
