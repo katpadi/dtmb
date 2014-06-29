@@ -1,3 +1,6 @@
+# Dragon x WinPacks
+A clone of a clone (cloneception?): A clone of the widely-popular game Heavy Bird which is a clone of Flappy Bird. The only difference is that it doesn't score up when you get pass a tower. It scores++ when you collect packs. Oh, and it uses dragon instead of bird. LOL.
+
 # Heavy Bird
 
 A clone of the widely-popular game [Flappy Bird](http://en.wikipedia.org/wiki/Flappy_Bird) created using the [Phaser framework](http://phaser.io/).

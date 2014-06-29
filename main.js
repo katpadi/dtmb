@@ -225,9 +225,9 @@ function create() {
         "",
         {
             font: '16px "Press Start 2P"',
-            fill: '#fff',
-            stroke: '#430',
-            strokeThickness: 8,
+            fill: '#000000',
+            stroke: '#2dcc70',
+            strokeThickness: 4,
             align: 'center'
         }
     );
@@ -239,9 +239,9 @@ function create() {
         "",
         {
             font: '24px "Press Start 2P"',
-            fill: '#fff',
-            stroke: '#430',
-            strokeThickness: 8,
+            fill: '#000000',
+            stroke: '#2dcc70',
+            strokeThickness: 4,
             align: 'center'
         }
     );
@@ -255,7 +255,7 @@ function create() {
         "",
         {
             font: '23px "Press Start 2P"',
-            fill: '#000',
+            fill: '#000000',
             stroke: '#2dcc70',
             strokeThickness: 4,
             align: 'center'
@@ -274,9 +274,9 @@ function create() {
         "",
         {
             font: '20px "Press Start 2P"',
-            fill: '#fff',
-            stroke: '#430',
-            strokeThickness: 8,
+            fill: '#000000',
+            stroke: '#2dcc70',
+            strokeThickness: 4,
             align: 'center'
         }
     );
@@ -408,18 +408,16 @@ function spawnTowers() {
     var topTower = spawnTower(towerY, true);
 
     /*
-     *  This produces the random Winston packs. LOL
+     *  This produces the random win packs. LOL
+     *  create(x, y, key, frame, exists)
      */
-    var packY = Math.random() * game.height / 2;
+    var packY = Math.random() * topTower.x / 2;
     var inv = invs.create(
-        topTower.x + topTower.width + Math.floor((Math.random() * 8) + 1), //ToDo: must not be totally IMPOSSIBLE to reach
+        topTower.x + topTower.width + Math.floor(Math.random() * 100 ) + 1, //ToDo: must not be totally IMPOSSIBLE to reach
         packY,
-        'winpack',
-        5
+        'winpack'
     );
 
-    //inv.width = 2;
-    //inv.height = game.world.height-5;
     inv.body.allowGravity = false;
     inv.body.velocity.x = -SPEED;
 
