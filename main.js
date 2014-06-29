@@ -303,9 +303,10 @@ function spawnTowers() {
      *  This produces the random win packs. LOL
      *  create(x, y, key, frame, exists)
      */
-    var packY = Math.random() * topTower.x / 2;
+    //var packY = Math.random() * topTower.x / 2;
+    var packY = Math.floor(Math.random() * (game.height-100) ) + 2;
     var inv = invs.create(
-        topTower.x + topTower.width + Math.floor(Math.random() * 100 ) + 1, //ToDo: must not be totally IMPOSSIBLE to reach
+        topTower.x + topTower.width + Math.floor(Math.random() * 100 ) + 2, //ToDo: must not be totally IMPOSSIBLE to reach
         packY,
         'winpack'
     );
