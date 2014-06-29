@@ -32,19 +32,17 @@ var state = {
 var parent = document.querySelector('#screen');
 
 var game = new Phaser.Game(
-    0,
-    0,
+    320,
+    568,
     Phaser.CANVAS,
     parent,
-    state,
-    false,
-    false
+    state
 );
 
 function preload() {
     var assets = {
         spritesheet: {
-            birdie: ['assets/dragon.png', 24, 20],
+            birdie: ['assets/dragonbigger.png', 43, 40],
             clouds: ['assets/clouds.png', 128, 64]
         },
         image: {
@@ -90,11 +88,6 @@ var gameStarted,
     cloudsTimer;
 
 function create() {
-    // Set world dimensions
-    var screenWidth = parent.clientWidth > window.innerWidth ? window.innerWidth : parent.clientWidth;
-    var screenHeight = parent.clientHeight > window.innerHeight ? window.innerHeight : parent.clientHeight;
-    game.world.width = screenWidth;
-    game.world.height = screenHeight;
     // Draw bg
     bg = game.add.graphics(0, 0);
     bg.beginFill(0xCCEEFF, 1);
@@ -220,8 +213,8 @@ function reset() {
     birdie.body.allowGravity = false;
     birdie.angle = 0;
     birdie.reset(game.world.width / 4, game.world.height / 2);
-    birdie.scale.setTo(2, 2);
     birdie.animations.play('fly');
+    birdie.scale.setTo(1, 1);
     towers.removeAll();
     invs.removeAll();
 }
@@ -378,7 +371,7 @@ function update() {
         }
         // Birdie is DEAD!
         if (gameOver) {
-            if (birdie.scale.x < 4) {
+            if (birdie.scale.x < 2) {
                 birdie.scale.setTo(
                     birdie.scale.x * 1.2,
                     birdie.scale.y * 1.2
