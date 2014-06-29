@@ -81,8 +81,7 @@ var gameStarted,
     winpack,
     bigpack,
     highScoreText,
-    postScoreClickArea,
-    postingScore,
+    gameOverText,
     leaderboard,
     flapSnd,
     scoreSnd,
@@ -178,7 +177,7 @@ function create() {
     highScoreText.anchor.setTo(0.5, 0.5);
 
     // ETO YUN!
-    postScoreText = game.add.text(
+    gameOverText = game.add.text(
         game.world.width / 2,
         game.world.height / 2,
         "",
@@ -190,11 +189,9 @@ function create() {
             align: 'center'
         }
     );
-    postScoreText.setText("Choose\nThe\nBetter Black");
-    postScoreText.anchor.setTo(0.5, 0.5);
-    postScoreText.renderable = false;
-    // So we can have clickable text... we check if the mousedown/touch event is within this rectangle inside flap()
-    postScoreClickArea = new Phaser.Rectangle(postScoreText.x - postScoreText.width / 2, postScoreText.y - postScoreText.height / 2, postScoreText.width, postScoreText.height);
+    gameOverText.setText("Choose\nThe\nBetter Black");
+    gameOverText.anchor.setTo(0.5, 0.5);
+    gameOverText.renderable = false;
 
     // Add sounds
     flapSnd = game.add.audio('flap');
@@ -219,7 +216,7 @@ function reset() {
     scoreText.setText("\n\nWinston\nExtreme Mint\n\nChoose\nThe\nBetter Black");
     instText.setText("TOUCH TO\nFLAP WINGS");
     highScoreText.renderable = false;
-    postScoreText.renderable = false;
+    gameOverText.renderable = false;
     birdie.body.allowGravity = false;
     birdie.angle = 0;
     birdie.reset(game.world.width / 4, game.world.height / 2);
@@ -344,7 +341,7 @@ function setGameOver() {
     highScoreText.setText("HIGHSCORE\n" + hiscore);
     highScoreText.renderable = true;
 
-    postScoreText.renderable = true;
+    gameOverText.renderable = true;
 
     // Stop all towers
     towers.forEachAlive(function(tower) {
@@ -391,7 +388,7 @@ function update() {
                 1 + 0.1 * Math.sin(game.time.now / 100),
                 1 + 0.1 * Math.cos(game.time.now / 100)
             );
-            postScoreText.angle = Math.random() * 5 * Math.cos(game.time.now / 100);
+            gameOverText.angle = Math.random() * 5 * Math.cos(game.time.now / 100);
         } else {
             // Check game over
             game.physics.overlap(birdie, towers, setGameOver);
