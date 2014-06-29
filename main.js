@@ -134,8 +134,8 @@ function create() {
         "",
         {
             font: '16px "Press Start 2P"',
-            fill: '#000000',
-            stroke: '#2dcc70',
+            fill: '#fff',
+            stroke: '#000',
             strokeThickness: 4,
             align: 'center'
         }
