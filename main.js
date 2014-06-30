@@ -223,6 +223,7 @@ function reset() {
     gameStarted = false;
     gameOver = false;
     score = 0;
+    scoreText.renderable = false;
     //credits.renderable = true;
     titleText.setText("\n\nWinston\nExtreme Mint\n\nChoose\nThe\nBetter Black");
     instText.setText("TOUCH TO\nFLAP WINGS");
@@ -249,6 +250,7 @@ function start() {
     towersTimer.add(2);
     // Show score
     scoreText.setText(score);
+    scoreText.renderable = true;
     instText.renderable = false;
     titleText.renderable = false;
     bigpack.renderable = false;
