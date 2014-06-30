@@ -347,7 +347,7 @@ function addScore(_, inv) {
 function setGameOver() {
     gameOver = true;
 
-    instText.setText("TAP DRAGON\nTO TRY AGAIN");
+    instText.setText("TAP EAGLE\nTO TRY AGAIN");
     instText.renderable = true;
     /*
     var hiscore = window.localStorage.getItem('hiscore');
