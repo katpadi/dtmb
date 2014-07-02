@@ -266,6 +266,9 @@ function flap() {
         birdie.body.velocity.y = -FLAP;
         flapSnd.play();
     }
+    else{
+        reset();
+    }
 }
 
 function spawnCloud() {
@@ -393,8 +396,8 @@ function update() {
             birdie.angle < -90
         ) {
             birdie.angle = 90;
-            birdie.animations.stop();
-            birdie.frame = 3;
+            //birdie.animations.stop();
+            //birdie.frame = 3;
             birdie.body.allowGravity = false;
             birdie.y = game.world.height - birdie.height / 2;
         } else {
@@ -402,12 +405,21 @@ function update() {
         }
         // Birdie is DEAD!
         if (gameOver) {
+            // Birdie is immortal
+            birdie.body.allowGravity = false;
+            birdie.y = game.world.height/2 - 60;
+            birdie.x = game.world.width/2;
+            birdie.angle = 0;
+            birdie.animations.play('fly');
+            //birdie.renderable = false;
+            /*
             if (birdie.scale.x < 2.5) {
                 birdie.scale.setTo(
                     birdie.scale.x * 1.2,
                     birdie.scale.y * 1.2
                 );
             }
+            */
             highScoreText.scale.setTo(
                 1 + 0.1 * Math.sin(game.time.now / 100),
                 1 + 0.1 * Math.cos(game.time.now / 100)
