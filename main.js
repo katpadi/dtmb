@@ -66,6 +66,7 @@ function preload() {
 
 var gameStarted,
     gameOver,
+    allowReset,
     score,
     bg,
     //credits,
@@ -220,6 +221,7 @@ function create() {
 }
 
 function reset() {
+    allowReset = false;
     gameStarted = false;
     gameOver = false;
     score = 0;
@@ -266,7 +268,7 @@ function flap() {
         birdie.body.velocity.y = -FLAP;
         flapSnd.play();
     }
-    else{
+    if (allowReset) {
         reset();
     }
 }
@@ -353,7 +355,6 @@ function setGameOver() {
     gameOver = true;
 
     instText.setText("TAP TO\nTRY AGAIN");
-    instText.renderable = true;
     /*
     var hiscore = window.localStorage.getItem('hiscore');
     hiscore = hiscore ? hiscore : score;
@@ -363,10 +364,10 @@ function setGameOver() {
     //highScoreText.setText("HIGHSCORE\n" + hiscore);
     // Just your score for now
 
+    gameOverText.renderable = true;
+
     highScoreText.setText("FINAL SCORE\n ");
     highScoreText.renderable = true; //dont show high score
-
-    gameOverText.renderable = true;
 
     // Stop all towers
     towers.forEachAlive(function(tower) {
@@ -396,37 +397,23 @@ function update() {
             birdie.angle < -90
         ) {
             birdie.angle = 90;
-            //birdie.animations.stop();
-            //birdie.frame = 3;
-            birdie.body.allowGravity = false;
-            birdie.y = game.world.height - birdie.height / 2;
+            birdie.animations.stop();
+            birdie.frame = 3;
         } else {
             birdie.animations.play('fly');
         }
         // Birdie is DEAD!
         if (gameOver) {
-            // Birdie is immortal
-            /*
-            birdie.body.allowGravity = false;
-            birdie.y = game.world.height/2 - 60;
-            birdie.x = game.world.width/2;
-            birdie.angle = 0;
-            birdie.animations.play('fly');
-            */
-            birdie.renderable = false;
-            /*
-            if (birdie.scale.x < 2.5) {
-                birdie.scale.setTo(
-                    birdie.scale.x * 1.2,
-                    birdie.scale.y * 1.2
-                );
-            }
-            */
             highScoreText.scale.setTo(
                 1 + 0.1 * Math.sin(game.time.now / 100),
                 1 + 0.1 * Math.cos(game.time.now / 100)
             );
             gameOverText.angle = Math.random() * 5 * Math.cos(game.time.now / 100);
+            if (birdie.y >= game.world.height - birdie.height) {
+                instText.renderable = true;
+                birdie.renderable = false;
+                allowReset = true;
+            }
         } else {
             // Check game over
             game.physics.overlap(birdie, towers, setGameOver);
