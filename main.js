@@ -406,12 +406,14 @@ function update() {
         // Birdie is DEAD!
         if (gameOver) {
             // Birdie is immortal
+            /*
             birdie.body.allowGravity = false;
             birdie.y = game.world.height/2 - 60;
             birdie.x = game.world.width/2;
             birdie.angle = 0;
             birdie.animations.play('fly');
-            //birdie.renderable = false;
+            */
+            birdie.renderable = false;
             /*
             if (birdie.scale.x < 2.5) {
                 birdie.scale.setTo(
