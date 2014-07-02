@@ -395,12 +395,14 @@ function update() {
             birdie.angle = 90;
             birdie.animations.stop();
             birdie.frame = 3;
+            birdie.body.allowGravity = false;
+            birdie.y = game.world.height - birdie.height / 2;
         } else {
             birdie.animations.play('fly');
         }
         // Birdie is DEAD!
         if (gameOver) {
-            if (birdie.scale.x < 2) {
+            if (birdie.scale.x < 2.5) {
                 birdie.scale.setTo(
                     birdie.scale.x * 1.2,
                     birdie.scale.y * 1.2
